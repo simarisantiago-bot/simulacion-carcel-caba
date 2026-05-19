@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulación de capacidad carcelaria · CABA 2024–2033</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div class="firma-row">
+      <div class="firma-ba" aria-label="Buenos Aires Ciudad">
+        <span class="ba">BA</span>
+        <span class="city">Buenos Aires<br>Ciudad</span>
+      </div>
+    </div>
+    <h1>Simulación de capacidad carcelaria · CABA</h1>
+    <p class="lead">
+      Proyección a 10 años (2024–2033) cruzando el <strong>Mapa del Delito CABA 2023</strong>
+      con el <strong>SNEEP nacional 2023</strong>. Ajustá las perillas y mirá cómo cambia
+      la demanda de plazas en tiempo real.
+    </p>
+    <div class="kpis">
+      <div class="kpi"><span class="kpi-val" id="kpi-delitos">—</span><span class="kpi-lbl">delitos en CABA (2023)</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpi-presos">—</span><span class="kpi-lbl">internos SPF (2023)</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpi-tasa">—</span><span class="kpi-lbl">tasa global presos / delitos</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <details class="warning">
+    <summary><strong>⚠ Tres limitaciones que conviene tener en mente al leer los números</strong></summary>
+    <ol>
+      <li><strong>SNEEP nacional es solo cárceles federales (SPF).</strong> La mayoría de los presos por
+        robo o hurto callejero de CABA están alojados en cárceles bonaerenses o alcaidías porteñas, no
+        en SPF. El modelo subestima fuerte la demanda real total de plazas.</li>
+      <li><strong>El mapa del delito subregistra denuncias</strong> (cifra negra alta, sobre todo en
+        hurto y amenazas).</li>
+      <li><strong>Las 6 categorías del mapa no cubren</strong> narcotráfico, abuso sexual ni delitos
+        contra la administración pública, que sí están en el SNEEP.</li>
+    </ol>
+  </details>
+
+  <section>
+    <h2>Parámetros base por categoría</h2>
+    <p class="muted">
+      Calculados directamente desde los archivos crudos. Son los valores por defecto del simulador.
+    </p>
+    <div class="table-wrap">
+      <table id="tabla-parametros">
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th class="num">Delitos 2023 (CABA)</th>
+            <th class="num">Internos SPF 2023</th>
+            <th class="num">Tasa empírica</th>
+            <th class="num">Condena media</th>
+            <th class="num">Mediana</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Simulador</h2>
+    <p class="muted">
+      Movés cualquier perilla y el gráfico se recalcula al instante.
+      Los valores por defecto son los empíricos del 2023.
+    </p>
+
+    <div class="controls">
+      <div class="controls-block">
+        <h3>Tasa de captura → cárcel (% del delito)</h3>
+        <p class="muted small">Qué porcentaje de los delitos callejeros termina con una persona presa en SPF.</p>
+        <div id="sliders-tasa" class="slider-grid"></div>
+      </div>
+
+      <div class="controls-block">
+        <h3>Crecimiento anual del delito por escenario</h3>
+        <p class="muted small">Cuánto sube (o baja) la cantidad de delitos en CABA cada año.</p>
+        <div id="sliders-crecimiento" class="slider-grid"></div>
+      </div>
+
+      <div class="controls-block">
+        <h3>Otros</h3>
+        <label class="field">
+          <span>Horizonte (años):</span>
+          <input type="number" id="horizonte" min="3" max="20" value="10">
+        </label>
+        <button id="reset" class="btn-reset">Restaurar valores empíricos</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Proyección de plazas necesarias</h2>
+    <p class="muted">Tres escenarios. Stock total de presos por año, sumando las 6 categorías.</p>
+    <div class="chart-wrap"><canvas id="chart-total"></canvas></div>
+
+    <h3 class="sub">Desagregación por tipo de delito (escenario base)</h3>
+    <div class="chart-wrap"><canvas id="chart-cat"></canvas></div>
+  </section>
+
+  <section>
+    <h2>Tabla de plazas por año (escenario base)</h2>
+    <div class="table-wrap">
+      <table id="tabla-plazas">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p class="muted small">
+      Fuentes: Mapa del Delito CABA 2023 · SNEEP nacional 2023 (SPF).
+      Código en <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>.
+      Modelo stock-flujo por cohortes anuales. Ver <code>CLAUDE.md</code> para detalles del modelo.
+    </p>
+  </footer>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

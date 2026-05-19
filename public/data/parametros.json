@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "anio_base": 2023,
+    "horizonte_anos": 10,
+    "total_delitos_caba_2023": 155897,
+    "total_presos_sneep_2023": 3021,
+    "fuente_delitos": "Mapa del Delito CABA 2023",
+    "fuente_presos": "SNEEP nacional 2023 (SPF) – Delito1Descripcion"
+  },
+  "escenarios_default": {
+    "optimista": -0.02,
+    "base": 0.0,
+    "pesimista": 0.03
+  },
+  "categorias": [
+    {
+      "nombre": "Robo",
+      "sneep_categorias": [
+        "Robo y/o tentativa de robo"
+      ],
+      "delitos_2023": 64983,
+      "presos_sneep_2023": 1615,
+      "tasa_empirica": 0.024853,
+      "condena_media_anos": 4.62,
+      "condena_mediana_anos": 3.33,
+      "n_condenas_observadas": 1594
+    },
+    {
+      "nombre": "Hurto",
+      "sneep_categorias": [
+        "Hurto y/o tentativa de hurto"
+      ],
+      "delitos_2023": 62567,
+      "presos_sneep_2023": 251,
+      "tasa_empirica": 0.004012,
+      "condena_media_anos": 3.91,
+      "condena_mediana_anos": 3.0,
+      "n_condenas_observadas": 248
+    },
+    {
+      "nombre": "Homicidios",
+      "sneep_categorias": [
+        "Homicidios dolosos",
+        "Homicidios dolosos (tent.)"
+      ],
+      "delitos_2023": 91,
+      "presos_sneep_2023": 174,
+      "tasa_empirica": 1.912088,
+      "condena_media_anos": 14.52,
+      "condena_mediana_anos": 15.0,
+      "n_condenas_observadas": 125
+    },
+    {
+      "nombre": "Lesiones",
+      "sneep_categorias": [
+        "Lesiones Dolosas"
+      ],
+      "delitos_2023": 9612,
+      "presos_sneep_2023": 26,
+      "tasa_empirica": 0.002705,
+      "condena_media_anos": 4.66,
+      "condena_mediana_anos": 3.92,
+      "n_condenas_observadas": 26
+    },
+    {
+      "nombre": "Amenazas",
+      "sneep_categorias": [
+        "Amenazas"
+      ],
+      "delitos_2023": 8214,
+      "presos_sneep_2023": 30,
+      "tasa_empirica": 0.003652,
+      "condena_media_anos": 6.08,
+      "condena_mediana_anos": 4.25,
+      "n_condenas_observadas": 30
+    },
+    {
+      "nombre": "Vialidad",
+      "sneep_categorias": [
+        "Homicidios Culposos",
+        "Lesiones Culposas"
+      ],
+      "delitos_2023": 10430,
+      "presos_sneep_2023": 172,
+      "tasa_empirica": 0.016491,
+      "condena_media_anos": 9.89,
+      "condena_mediana_anos": 8.0,
+      "n_condenas_observadas": 141
+    }
+  ]
+}
