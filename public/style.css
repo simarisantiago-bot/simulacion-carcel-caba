@@ -313,6 +313,17 @@ tbody tr.total-row td { color: var(--ba-cyan); border-bottom-color: var(--ba-azu
   color: var(--ba-azul);
 }
 
+.num-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--ba-line);
+  border-radius: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  background: #fff;
+  color: var(--ba-azul);
+}
+
 .field-block {
   margin-bottom: 14px;
   font-size: 14px;
@@ -381,6 +392,69 @@ tbody tr.total-row td { color: var(--ba-cyan); border-bottom-color: var(--ba-azu
   position: relative;
   height: 380px;
   margin-top: 8px;
+}
+
+/* ─────────────────────────────────────────────────────────
+ *  Balance al año final del horizonte
+ * ───────────────────────────────────────────────────────── */
+#balance { margin: 20px 0 8px; }
+.balance-hd {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ba-azul);
+  margin-bottom: 10px;
+}
+.balance-hd small {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  color: var(--ba-gris);
+  margin-left: 6px;
+}
+.balance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.balance-card {
+  background: var(--ba-offwhite);
+  border: 1px solid var(--ba-line);
+  border-left: 6px solid var(--ba-gris);
+  padding: 12px 14px;
+}
+.balance-card.def { border-left-color: var(--c-pes);  background: #FFF8E0; }
+.balance-card.sup { border-left-color: var(--ba-cyan); background: #E8F8F4; }
+.balance-card.eq  { border-left-color: var(--ba-gris); }
+.balance-esc {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ba-gris);
+}
+.balance-val {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ba-azul);
+  line-height: 1.1;
+  margin: 2px 0;
+}
+.balance-delta {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ba-azul);
+}
+.balance-card.def .balance-delta { color: #8B6914; }
+.balance-card.sup .balance-delta { color: #0F766E; }
+@media (max-width: 700px) {
+  .balance-grid { grid-template-columns: 1fr; }
 }
 
 /* dot indicator usado en tabla de parámetros y plazas */

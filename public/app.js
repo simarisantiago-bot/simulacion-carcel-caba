@@ -186,6 +186,15 @@ function renderSliders() {
     rerun();
   });
 
+  // Capacidad de referencia
+  const capInput = document.getElementById('capacidad');
+  capInput.value = STATE.capacidadReferencia;
+  capInput.addEventListener('input', () => {
+    const v = Math.max(0, parseInt(capInput.value, 10) || 0);
+    STATE.capacidadReferencia = v;
+    rerun();
+  });
+
   // Reset
   document.getElementById('reset').addEventListener('click', () => {
     STATE = freshState();
@@ -225,12 +234,25 @@ function renderTablaPlazas(sim) {
 
 function renderChartTotal(sim) {
   const ctx = document.getElementById('chart-total');
+  const n   = sim.base.anios.length;
+  const cap = STATE.capacidadReferencia;
+  const capLine = new Array(n).fill(cap);
   const data = {
     labels: sim.base.anios,
     datasets: [
-      { label: 'Optimista (crecimiento bajo)',  data: sim.optimista.total, borderColor: COLOR.optimista, backgroundColor: COLOR.optimista+'22', tension: 0.25 },
-      { label: 'Base',                          data: sim.base.total,      borderColor: COLOR.base,      backgroundColor: COLOR.base+'22',      tension: 0.25 },
-      { label: 'Pesimista (crecimiento alto)',  data: sim.pesimista.total, borderColor: COLOR.pesimista, backgroundColor: COLOR.pesimista+'22', tension: 0.25 },
+      { label: `Capacidad de referencia (${fmtInt.format(cap)})`,
+        data: capLine,
+        borderColor: COLOR.Homicidios,    // amarillo institucional
+        backgroundColor: 'transparent',
+        borderDash: [6, 4],
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0,
+        order: 0,
+      },
+      { label: 'Optimista (crecimiento bajo)',  data: sim.optimista.total, borderColor: COLOR.optimista, backgroundColor: COLOR.optimista+'22', tension: 0.25, order: 1 },
+      { label: 'Base',                          data: sim.base.total,      borderColor: COLOR.base,      backgroundColor: COLOR.base+'22',      tension: 0.25, order: 1 },
+      { label: 'Pesimista (crecimiento alto)',  data: sim.pesimista.total, borderColor: COLOR.pesimista, backgroundColor: COLOR.pesimista+'22', tension: 0.25, order: 1 },
     ],
   };
   const opts = {
@@ -291,10 +313,15 @@ function renderChartCategorias(sim) {
  * ───────────────────────────────────────────────────────── */
 
 function freshState() {
+  const stockTotal2023 = PARAMS.categorias.reduce(
+    (s, c) => s + (c.presos_sneep_2023 || 0), 0,
+  );
   return {
     horizonte: PARAMS.meta.horizonte_anos,
     crecimientos: { ...PARAMS.escenarios_default },
     factorCumplimiento: PARAMS.supuestos_default?.factor_cumplimiento ?? 0.67,
+    capacidadReferencia: stockTotal2023,    // default: stock observado 2023
+    stockTotal2023,                          // baseline inmutable, para mostrar
     categorias: PARAMS.categorias.map(c => ({
       nombre: c.nombre,
       delitos_2023: c.delitos_2023,
@@ -310,6 +337,42 @@ function rerun() {
   renderChartTotal(sim);
   renderChartCategorias(sim);
   renderTablaPlazas(sim);
+  renderBalance(sim);
+}
+
+/** Balance final del horizonte: déficit o superávit contra la capacidad. */
+function renderBalance(sim) {
+  const out = document.getElementById('balance');
+  if (!out) return;
+  const cap = STATE.capacidadReferencia;
+  const horiz = STATE.horizonte;
+  const anioFinal = 2023 + horiz;
+
+  const valores = {
+    optimista: Math.round(sim.optimista.total[horiz - 1]),
+    base:      Math.round(sim.base.total[horiz - 1]),
+    pesimista: Math.round(sim.pesimista.total[horiz - 1]),
+  };
+
+  const rows = [];
+  for (const [esc, val] of Object.entries(valores)) {
+    const delta = val - cap;
+    const sign  = delta >= 0 ? '+' : '−';
+    const abs   = Math.abs(delta);
+    const tag   = delta > 0 ? 'def' : delta < 0 ? 'sup' : 'eq';
+    const label = delta > 0 ? 'Déficit' : delta < 0 ? 'Superávit' : 'Calzado';
+    rows.push(`
+      <div class="balance-card ${tag}">
+        <div class="balance-esc">${esc[0].toUpperCase()+esc.slice(1)}</div>
+        <div class="balance-val">${fmtInt.format(val)}</div>
+        <div class="balance-delta">${label} ${sign}${fmtInt.format(abs)}</div>
+      </div>`);
+  }
+
+  out.innerHTML = `
+    <div class="balance-hd">Balance al ${anioFinal} <small>(stock proyectado vs capacidad de referencia: ${fmtInt.format(cap)})</small></div>
+    <div class="balance-grid">${rows.join('')}</div>
+  `;
 }
 
 async function main() {
