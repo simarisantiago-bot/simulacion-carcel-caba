@@ -93,6 +93,18 @@
 
       <div class="controls-block">
         <h3>Otros</h3>
+
+        <div class="field-block">
+          <label for="factor-cumplimiento">
+            % de pena efectivamente cumplida
+            <span class="hint" title="Por libertad condicional o asistida, los presos suelen cumplir entre 60% y 75% de su condena. Default 67% (≈ 2/3, el típico para delitos sin agravantes).">?</span>
+          </label>
+          <div class="slider-inline">
+            <input type="range" id="factor-cumplimiento" min="40" max="100" step="1" value="67">
+            <span class="val" id="factor-cumplimiento-val">67%</span>
+          </div>
+        </div>
+
         <label class="field">
           <span>Horizonte (años):</span>
           <input type="number" id="horizonte" min="3" max="20" value="10">

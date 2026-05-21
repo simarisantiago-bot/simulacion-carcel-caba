@@ -34,18 +34,21 @@ let chartCat   = null;
  *  - cat: { delitos_2023, presos_sneep_2023, tasa_captura, condena_media_anos }
  *  - crecimiento: tasa anual decimal (0.03 = +3%/año)
  *  - horizonteAnos: cantidad de años a simular (a partir de 2024)
+ *  - factorCumplimiento: fracción de la condena que se cumple efectivamente
+ *                        (default 0.67 ≈ libertad condicional típica)
  *
  *  Modelo:
- *    stock(2023) = presos_sneep_2023                              (observado)
- *    stock(t)    = stock(t−1) + ingresos(t) − salidas(t)
- *    ingresos(t) = delitos_2023 · (1+g)^(t−2023) · tasa_captura
- *    salidas(t)  = ingresos(t − condena_media)
- *                  Si t − condena_media < 2024, asumimos salidas
- *                  iguales a la cohorte estacionaria pre-modelo:
- *                  presos_sneep_2023 / condena_media.
+ *    condena_efectiva = condena_media · factor_cumplimiento
+ *    stock(2023)      = presos_sneep_2023                          (observado)
+ *    stock(t)         = stock(t−1) + ingresos(t) − salidas(t)
+ *    ingresos(t)      = delitos_2023 · (1+g)^(t−2023) · tasa_captura
+ *    salidas(t)       = ingresos(t − condena_efectiva)
+ *                       Si t − condena_efectiva < 2024, asumimos cohortes
+ *                       estacionarias pre-modelo: presos_2023 / condena_efectiva.
  */
-function simularCategoria(cat, crecimiento, horizonteAnos) {
-  const condena = Math.max(1, Math.round(cat.condena_media_anos || 1));
+function simularCategoria(cat, crecimiento, horizonteAnos, factorCumplimiento = 1.0) {
+  const condenaBase = cat.condena_media_anos || 1;
+  const condena = Math.max(1, Math.round(condenaBase * factorCumplimiento));
   const ingresoEstacionario = cat.presos_sneep_2023 / condena;
 
   const ingresos = [];
@@ -74,11 +77,12 @@ function simular(state) {
   const anios = Array.from({ length: horizonte }, (_, i) => aniosBase + 1 + i);
 
   const out = {};
+  const factor = state.factorCumplimiento;
   for (const [escName, g] of Object.entries(state.crecimientos)) {
     const byCat = {};
     const total = new Array(horizonte).fill(0);
     for (const cat of state.categorias) {
-      const stock = simularCategoria(cat, g, horizonte);
+      const stock = simularCategoria(cat, g, horizonte, factor);
       byCat[cat.nombre] = stock;
       for (let i = 0; i < horizonte; i++) total[i] += stock[i];
     }
@@ -168,6 +172,17 @@ function renderSliders() {
   hzInput.addEventListener('input', () => {
     const h = Math.min(20, Math.max(3, +hzInput.value || 10));
     STATE.horizonte = h;
+    rerun();
+  });
+
+  // Factor de cumplimiento (libertad condicional / asistida)
+  const fcInput = document.getElementById('factor-cumplimiento');
+  const fcVal   = document.getElementById('factor-cumplimiento-val');
+  fcInput.value = Math.round(STATE.factorCumplimiento * 100);
+  fcVal.textContent = `${Math.round(STATE.factorCumplimiento * 100)}%`;
+  fcInput.addEventListener('input', () => {
+    STATE.factorCumplimiento = (+fcInput.value) / 100;
+    fcVal.textContent = `${Math.round(STATE.factorCumplimiento * 100)}%`;
     rerun();
   });
 
@@ -279,6 +294,7 @@ function freshState() {
   return {
     horizonte: PARAMS.meta.horizonte_anos,
     crecimientos: { ...PARAMS.escenarios_default },
+    factorCumplimiento: PARAMS.supuestos_default?.factor_cumplimiento ?? 0.67,
     categorias: PARAMS.categorias.map(c => ({
       nombre: c.nombre,
       delitos_2023: c.delitos_2023,

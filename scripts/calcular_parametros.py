@@ -149,6 +149,12 @@ def main() -> None:
             "base":       0.00,
             "pesimista":  0.03,
         },
+        "supuestos_default": {
+            # Fracción de la condena que se cumple efectivamente en prisión.
+            # Default 0.67 ≈ libertad condicional típica (2/3 de la pena en
+            # delitos sin agravantes). Editable como slider en la UI.
+            "factor_cumplimiento": 0.67,
+        },
         "categorias": categorias,
     }
 

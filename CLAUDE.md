@@ -20,11 +20,15 @@ scripts/calcular_parametros.py   →   public/data/parametros.json   →   publi
 Para cada año `t` ∈ [2024, 2033] y cada una de las 6 categorías `c`:
 
 ```
-delitos(c, t)   = delitos_2023(c) × (1 + crecimiento_c)^(t−2023)
-ingresos(c, t)  = delitos(c, t) × tasa_captura(c)
-stock(c, t)     = Σ ingresos(c, t−k) para k = 0..condena_media(c)−1
-plazas(t)       = Σ_c stock(c, t)
+condena_efectiva(c)  = condena_media(c) × factor_cumplimiento
+delitos(c, t)        = delitos_2023(c) × (1 + crecimiento_c)^(t−2023)
+ingresos(c, t)       = delitos(c, t) × tasa_captura(c)
+salidas(c, t)        = ingresos(c, t − condena_efectiva(c))
+stock(c, t)          = stock(c, t−1) + ingresos(c, t) − salidas(c, t)
+plazas(t)            = Σ_c stock(c, t)
 ```
+
+`factor_cumplimiento` (default 0.67) refleja que la mayoría de los presos sale antes del cumplimiento total por libertad condicional o asistida (~2/3 de la pena).
 
 Tres escenarios pre-armados: optimista (−2% / año), base (0%), pesimista (+3% / año). Todos los parámetros son editables en la UI.
 

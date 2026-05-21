@@ -12,6 +12,9 @@
     "base": 0.0,
     "pesimista": 0.03
   },
+  "supuestos_default": {
+    "factor_cumplimiento": 0.67
+  },
   "categorias": [
     {
       "nombre": "Robo",

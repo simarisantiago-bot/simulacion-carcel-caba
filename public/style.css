@@ -313,6 +313,49 @@ tbody tr.total-row td { color: var(--ba-cyan); border-bottom-color: var(--ba-azu
   color: var(--ba-azul);
 }
 
+.field-block {
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+.field-block label {
+  display: block;
+  color: var(--ba-azul);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.field-block .hint {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 14px;
+  text-align: center;
+  background: var(--ba-cyan);
+  color: var(--ba-azul);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 4px;
+}
+.slider-inline {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  gap: 8px;
+  align-items: center;
+}
+.slider-inline input[type="range"] {
+  width: 100%;
+  accent-color: var(--ba-azul);
+}
+.slider-inline .val {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--ba-azul);
+  font-weight: 600;
+  font-size: 13px;
+}
+
 .btn-reset {
   width: 100%;
   padding: 12px;
