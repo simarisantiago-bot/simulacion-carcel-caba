@@ -4,8 +4,46 @@
     "horizonte_anos": 10,
     "total_delitos_caba_2023": 155897,
     "total_presos_sneep_2023": 3021,
+    "presos_modelables": 2268,
+    "presos_no_modelables": 753,
+    "categorias_no_mapeadas": [
+      {
+        "delito": "Violaciones/Abuso sexual",
+        "n": 249
+      },
+      {
+        "delito": "InfracciÃ³n ley nÂ° 23.737 (estupefacientes)",
+        "n": 140
+      },
+      {
+        "delito": "Otros delitos contra las personas",
+        "n": 70
+      },
+      {
+        "delito": "PrivaciÃ³n ilegÃ­tima de la libertad",
+        "n": 60
+      },
+      {
+        "delito": "Delitos c/el orden pÃºblico",
+        "n": 52
+      },
+      {
+        "delito": "Delitos c/ la administracion pÃºblica",
+        "n": 43
+      },
+      {
+        "delito": "Delitos contra la seguridad pÃºblica",
+        "n": 33
+      },
+      {
+        "delito": "Otros delitos contra la propiedad",
+        "n": 27
+      }
+    ],
     "fuente_delitos": "Mapa del Delito CABA 2023",
-    "fuente_presos": "SNEEP nacional 2023 (SPF) – Delito1Descripcion"
+    "fuente_presos": "SNEEP nacional 2023 (SPF) · Delito1Descripcion",
+    "nota_universo": "El SNEEP nacional incluye sólo internos con causa en Justicia Nacional (3.021 condenados). No incluye SPB ni alcaidías porteñas. Del total, 1.497 (49,5%) tenían residencia en CABA y 1.307 en Buenos Aires provincia (mayoría AMBA).",
+    "factor_cumplimiento_default_calibracion": 0.67
   },
   "escenarios_default": {
     "optimista": -0.02,
@@ -21,11 +59,18 @@
       "sneep_categorias": [
         "Robo y/o tentativa de robo"
       ],
+      "mapa_tipo": "Robo",
+      "mapa_subtipos": null,
       "delitos_2023": 64983,
       "presos_sneep_2023": 1615,
+      "presos_residencia_caba": 761,
+      "pct_residencia_caba": 0.471,
       "tasa_empirica": 0.024853,
+      "tasa_flujo": 0.008029,
       "condena_media_anos": 4.62,
       "condena_mediana_anos": 3.33,
+      "condena_p10_anos": 1.0,
+      "condena_p90_anos": 9.0,
       "n_condenas_observadas": 1594
     },
     {
@@ -33,36 +78,57 @@
       "sneep_categorias": [
         "Hurto y/o tentativa de hurto"
       ],
+      "mapa_tipo": "Hurto",
+      "mapa_subtipos": null,
       "delitos_2023": 62567,
       "presos_sneep_2023": 251,
+      "presos_residencia_caba": 172,
+      "pct_residencia_caba": 0.685,
       "tasa_empirica": 0.004012,
+      "tasa_flujo": 0.001531,
       "condena_media_anos": 3.91,
       "condena_mediana_anos": 3.0,
+      "condena_p10_anos": 0.67,
+      "condena_p90_anos": 7.5,
       "n_condenas_observadas": 248
     },
     {
-      "nombre": "Homicidios",
+      "nombre": "Homicidios dolosos",
       "sneep_categorias": [
         "Homicidios dolosos",
         "Homicidios dolosos (tent.)"
       ],
+      "mapa_tipo": "Homicidios",
+      "mapa_subtipos": null,
       "delitos_2023": 91,
       "presos_sneep_2023": 174,
+      "presos_residencia_caba": 109,
+      "pct_residencia_caba": 0.626,
       "tasa_empirica": 1.912088,
+      "tasa_flujo": 0.196547,
       "condena_media_anos": 14.52,
       "condena_mediana_anos": 15.0,
+      "condena_p10_anos": 5.1,
+      "condena_p90_anos": 24.0,
       "n_condenas_observadas": 125
     },
     {
-      "nombre": "Lesiones",
+      "nombre": "Lesiones dolosas",
       "sneep_categorias": [
         "Lesiones Dolosas"
       ],
+      "mapa_tipo": "Lesiones",
+      "mapa_subtipos": null,
       "delitos_2023": 9612,
       "presos_sneep_2023": 26,
+      "presos_residencia_caba": 15,
+      "pct_residencia_caba": 0.577,
       "tasa_empirica": 0.002705,
+      "tasa_flujo": 0.000866,
       "condena_media_anos": 4.66,
       "condena_mediana_anos": 3.92,
+      "condena_p10_anos": 1.85,
+      "condena_p90_anos": 7.0,
       "n_condenas_observadas": 26
     },
     {
@@ -70,25 +136,61 @@
       "sneep_categorias": [
         "Amenazas"
       ],
+      "mapa_tipo": "Amenazas",
+      "mapa_subtipos": null,
       "delitos_2023": 8214,
       "presos_sneep_2023": 30,
+      "presos_residencia_caba": 19,
+      "pct_residencia_caba": 0.633,
       "tasa_empirica": 0.003652,
+      "tasa_flujo": 0.000897,
       "condena_media_anos": 6.08,
       "condena_mediana_anos": 4.25,
+      "condena_p10_anos": 2.2,
+      "condena_p90_anos": 13.8,
       "n_condenas_observadas": 30
     },
     {
-      "nombre": "Vialidad",
+      "nombre": "Vialidad fatal",
       "sneep_categorias": [
-        "Homicidios Culposos",
+        "Homicidios Culposos"
+      ],
+      "mapa_tipo": "Vialidad",
+      "mapa_subtipos": [
+        "Muertes por siniestros viales"
+      ],
+      "delitos_2023": 102,
+      "presos_sneep_2023": 159,
+      "presos_residencia_caba": 42,
+      "pct_residencia_caba": 0.264,
+      "tasa_empirica": 1.558824,
+      "tasa_flujo": 0.222004,
+      "condena_media_anos": 10.48,
+      "condena_mediana_anos": 10.0,
+      "condena_p10_anos": 3.83,
+      "condena_p90_anos": 20.0,
+      "n_condenas_observadas": 128
+    },
+    {
+      "nombre": "Vialidad lesivo",
+      "sneep_categorias": [
         "Lesiones Culposas"
       ],
-      "delitos_2023": 10430,
-      "presos_sneep_2023": 172,
-      "tasa_empirica": 0.016491,
-      "condena_media_anos": 9.89,
-      "condena_mediana_anos": 8.0,
-      "n_condenas_observadas": 141
+      "mapa_tipo": "Vialidad",
+      "mapa_subtipos": [
+        "Lesiones por siniestros viales"
+      ],
+      "delitos_2023": 10328,
+      "presos_sneep_2023": 13,
+      "presos_residencia_caba": 3,
+      "pct_residencia_caba": 0.231,
+      "tasa_empirica": 0.001259,
+      "tasa_flujo": 0.000467,
+      "condena_media_anos": 4.02,
+      "condena_mediana_anos": 3.5,
+      "condena_p10_anos": 3.0,
+      "condena_p90_anos": 6.65,
+      "n_condenas_observadas": 13
     }
   ]
 }

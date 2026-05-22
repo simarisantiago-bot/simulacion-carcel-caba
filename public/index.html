@@ -27,9 +27,9 @@
       la demanda de plazas en tiempo real.
     </p>
     <div class="kpis">
-      <div class="kpi"><span class="kpi-val" id="kpi-delitos">—</span><span class="kpi-lbl">delitos en CABA (2023)</span></div>
-      <div class="kpi"><span class="kpi-val" id="kpi-presos">—</span><span class="kpi-lbl">internos SPF (2023)</span></div>
-      <div class="kpi"><span class="kpi-val" id="kpi-tasa">—</span><span class="kpi-lbl">tasa global presos / delitos</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpi-delitos">—</span><span class="kpi-lbl">delitos callejeros<br>en CABA (2023)</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpi-presos">—</span><span class="kpi-lbl">internos SPF nacional<br>modelables (2023)</span></div>
+      <div class="kpi"><span class="kpi-val" id="kpi-fuera">—</span><span class="kpi-lbl">internos SPF nacional<br>fuera del modelo</span></div>
     </div>
   </div>
 </header>
@@ -37,33 +37,43 @@
 <main class="container">
 
   <details class="warning">
-    <summary><strong>⚠ Tres limitaciones que conviene tener en mente al leer los números</strong></summary>
+    <summary><strong>⚠ Cómo leer estos números — limitaciones y aclaraciones</strong></summary>
     <ol>
-      <li><strong>SNEEP nacional es solo cárceles federales (SPF).</strong> La mayoría de los presos por
-        robo o hurto callejero de CABA están alojados en cárceles bonaerenses o alcaidías porteñas, no
-        en SPF. El modelo subestima fuerte la demanda real total de plazas.</li>
-      <li><strong>El mapa del delito subregistra denuncias</strong> (cifra negra alta, sobre todo en
-        hurto y amenazas).</li>
-      <li><strong>Las 6 categorías del mapa no cubren</strong> narcotráfico, abuso sexual ni delitos
-        contra la administración pública, que sí están en el SNEEP.</li>
+      <li><strong>El SNEEP usado es Justicia Nacional (3.021 condenados).</strong> Históricamente
+        cubre el grueso de las causas penales de CABA. No incluye SPB ni alcaidías porteñas.
+        Del total, 1.497 (49,5%) residían en CABA antes de ser detenidos; el resto, mayormente
+        en Buenos Aires provincia (AMBA).</li>
+      <li><strong>753 internos quedan "fuera del modelo"</strong> porque cometieron delitos no
+        cubiertos por el Mapa CABA: narcotráfico (140), violaciones (249), privación ilegítima
+        de la libertad, delitos contra la administración pública, etc.</li>
+      <li><strong>El mapa del delito subregistra denuncias</strong> — cifra negra alta, sobre
+        todo en hurto y amenazas. El delito real es mayor al denunciado.</li>
+      <li><strong>"Tasa de flujo" vs "Tasa empírica":</strong> la empírica (presos/delitos) mezcla
+        stock con flujo y por eso da valores raros (191% en homicidios). La de flujo divide
+        ingresos anuales estimados sobre delitos — siempre <span class="nowrap">&lt; 100 %</span>
+        e interpretable como "porcentaje de delitos que termina en una condena nacional por año".</li>
     </ol>
   </details>
 
   <section>
     <h2>Parámetros base por categoría</h2>
     <p class="muted">
-      Calculados directamente desde los archivos crudos. Son los valores por defecto del simulador.
+      Calculados directamente desde los archivos crudos. La tasa de flujo (en
+      negrita) es la que arranca el simulador; la empírica está al lado para
+      transparencia.
     </p>
     <div class="table-wrap">
       <table id="tabla-parametros">
         <thead>
           <tr>
             <th>Categoría</th>
-            <th class="num">Delitos 2023 (CABA)</th>
-            <th class="num">Internos SPF 2023</th>
-            <th class="num">Tasa empírica</th>
-            <th class="num">Condena media</th>
-            <th class="num">Mediana</th>
+            <th class="num">Delitos 2023 <small>(CABA)</small></th>
+            <th class="num">Internos SPF <small>(2023)</small></th>
+            <th class="num" title="Porcentaje de internos cuya última residencia era CABA">% res. CABA</th>
+            <th class="num muted-th" title="presos_2023 / delitos_2023 — mezcla stock con flujo, sólo informativa">Tasa empírica</th>
+            <th class="num" title="ingresos_anuales / delitos_2023 — usada por el simulador">Tasa de flujo</th>
+            <th class="num">Condena media <small>(años)</small></th>
+            <th class="num muted-th">Mediana</th>
           </tr>
         </thead>
         <tbody></tbody>

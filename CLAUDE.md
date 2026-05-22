@@ -32,24 +32,44 @@ plazas(t)            = Σ_c stock(c, t)
 
 Tres escenarios pre-armados: optimista (−2% / año), base (0%), pesimista (+3% / año). Todos los parámetros son editables en la UI.
 
-## Mapeo de categorías
+## Mapeo de categorías (7)
 
-| Mapa del delito CABA | SNEEP Delito1Descripcion |
-|---|---|
-| Robo | Robo y/o tentativa de robo |
-| Hurto | Hurto y/o tentativa de hurto |
-| Homicidios | Homicidios dolosos (+ tentativa) |
-| Lesiones | Lesiones Dolosas |
-| Amenazas | Amenazas |
-| Vialidad | Homicidios Culposos + Lesiones Culposas |
+Vialidad se separa en "fatal" y "lesivo" porque mezclar 159 homicidios culposos
+con 13 lesiones culposas en una sola categoría confundía el análisis.
+
+| Categoría (modelo)   | Mapa del Delito CABA (tipo · subtipo)                | SNEEP Delito1Descripcion              |
+|----------------------|-------------------------------------------------------|----------------------------------------|
+| Robo                 | Robo (todos)                                          | Robo y/o tentativa de robo             |
+| Hurto                | Hurto (todos)                                         | Hurto y/o tentativa de hurto           |
+| Homicidios dolosos   | Homicidios (todos)                                    | Homicidios dolosos (+ tent.)           |
+| Lesiones dolosas     | Lesiones (todos)                                      | Lesiones Dolosas                       |
+| Amenazas             | Amenazas (todos)                                      | Amenazas                               |
+| Vialidad fatal       | Vialidad · Muertes por siniestros viales              | Homicidios Culposos                    |
+| Vialidad lesivo      | Vialidad · Lesiones por siniestros viales             | Lesiones Culposas                      |
 
 Definido en `scripts/calcular_parametros.py` (constante `MAPEO`).
 
+## Tasa de captura: dos versiones
+
+- **Tasa empírica** = `presos_2023 / delitos_2023`. Mezcla stock con flujo;
+  da valores >100% en categorías de condenas largas. Sólo informativa.
+- **Tasa de flujo** = `(presos_2023 / (condena_media · 0,67)) / delitos_2023`.
+  Es el ingreso anual estimado dividido por el delito. Es la que arranca
+  el simulador. Siempre menor a 100% y mantiene coherencia con el stock
+  observado.
+
 ## Limitaciones (importantes para interpretar resultados)
 
-1. **SNEEP es solo cárceles federales (SPF)**. La mayoría de los presos por delitos callejeros de CABA están en SPB o alcaidías porteñas, no en SPF → la tasa empírica subestima fuerte la demanda real.
-2. **El mapa del delito subregistra denuncias**. Cifra negra alta en hurtos y amenazas.
-3. **Las 6 categorías CABA no cubren** narcotráfico, abuso sexual, delitos contra la administración pública, etc. (que sí están en el SNEEP).
+1. **El SNEEP usado es Justicia Nacional** (3.021 condenados). Históricamente
+   cubre el grueso de causas de CABA, pero no incluye SPB ni alcaidías
+   porteñas. De los 3.021, sólo 1.497 (49,5%) residían en CABA — el resto
+   son mayormente del AMBA (Buenos Aires provincia).
+2. **753 internos (25%) quedan fuera del modelo** porque cometieron delitos
+   no cubiertos por el Mapa CABA: narcotráfico (140), violaciones (249),
+   privación ilegítima de la libertad, delitos c/ la administración pública,
+   etc. Se reporta el total como KPI de transparencia.
+3. **El mapa del delito subregistra denuncias**. Cifra negra alta en hurto
+   y amenazas. El delito real es mayor al denunciado.
 
 ## Comandos
 

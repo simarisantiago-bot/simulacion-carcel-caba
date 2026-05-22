@@ -219,6 +219,10 @@ td.num, th.num {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
 }
+.muted-num { color: var(--ba-gris); font-weight: 400; }
+.muted-th  { color: var(--ba-gris); }
+th small { font-weight: 400; opacity: 0.75; }
+.nowrap { white-space: nowrap; }
 tbody tr:hover { background: rgba(141, 226, 214, 0.18); }
 tbody tr.total-row {
   font-weight: 700;

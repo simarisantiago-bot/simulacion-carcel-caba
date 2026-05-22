@@ -5,12 +5,13 @@
 
 // Paleta derivada del manual de marca GCBA (azul / cyan / amarillo / gris)
 const COLOR = {
-  Robo:       '#153244',  // azul oscuro
-  Hurto:      '#2C6E8C',  // azul medio (derivado)
-  Homicidios: '#FFCC00',  // amarillo institucional
-  Lesiones:   '#8DE2D6',  // cyan
-  Amenazas:   '#B49B00',  // amarillo oscuro (derivado)
-  Vialidad:   '#3C3C3B',  // gris
+  'Robo':               '#153244',  // azul oscuro
+  'Hurto':              '#2C6E8C',  // azul medio (derivado)
+  'Homicidios dolosos': '#FFCC00',  // amarillo institucional
+  'Lesiones dolosas':   '#8DE2D6',  // cyan
+  'Amenazas':           '#B49B00',  // amarillo oscuro (derivado)
+  'Vialidad fatal':     '#3C3C3B',  // gris oscuro
+  'Vialidad lesivo':    '#A7A7A6',  // gris medio
 
   optimista: '#2C6E8C',
   base:      '#153244',
@@ -98,10 +99,10 @@ function simular(state) {
 
 function renderKpis() {
   const m = PARAMS.meta;
-  const tasa = m.total_presos_sneep_2023 / m.total_delitos_caba_2023;
   document.getElementById('kpi-delitos').textContent = fmtInt.format(m.total_delitos_caba_2023);
-  document.getElementById('kpi-presos').textContent  = fmtInt.format(m.total_presos_sneep_2023);
-  document.getElementById('kpi-tasa').textContent    = fmtPct(tasa);
+  document.getElementById('kpi-presos').textContent  = fmtInt.format(m.presos_modelables);
+  const kpiOff = document.getElementById('kpi-fuera');
+  if (kpiOff) kpiOff.textContent = fmtInt.format(m.presos_no_modelables);
 }
 
 function renderTablaParametros() {
@@ -113,9 +114,11 @@ function renderTablaParametros() {
       <td><span class="dot" style="background:${COLOR[c.nombre]}"></span>${c.nombre}</td>
       <td class="num">${fmtInt.format(c.delitos_2023)}</td>
       <td class="num">${fmtInt.format(c.presos_sneep_2023)}</td>
-      <td class="num">${fmtPct(c.tasa_empirica)}</td>
-      <td class="num">${c.condena_media_anos ?? '—'} años</td>
-      <td class="num">${c.condena_mediana_anos ?? '—'} años</td>
+      <td class="num">${fmtPct(c.pct_residencia_caba, 0)}</td>
+      <td class="num muted-num">${fmtPct(c.tasa_empirica)}</td>
+      <td class="num"><strong>${fmtPct(c.tasa_flujo)}</strong></td>
+      <td class="num">${c.condena_media_anos ?? '—'}</td>
+      <td class="num muted-num">${c.condena_mediana_anos ?? '—'}</td>
     `;
     tbody.appendChild(tr);
   }
@@ -326,7 +329,9 @@ function freshState() {
       nombre: c.nombre,
       delitos_2023: c.delitos_2023,
       presos_sneep_2023: c.presos_sneep_2023,
-      tasa_captura: c.tasa_empirica,
+      // El simulador usa la tasa de flujo (no la empírica) como default,
+      // porque mantiene la coherencia con el stock observado.
+      tasa_captura: c.tasa_flujo,
       condena_media_anos: c.condena_media_anos ?? 4,
     })),
   };
