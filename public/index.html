@@ -39,28 +39,31 @@
   <details class="warning">
     <summary><strong>⚠ Cómo leer estos números — limitaciones y aclaraciones</strong></summary>
     <ol>
-      <li><strong>El SNEEP usado es Justicia Nacional (3.021 condenados).</strong> Históricamente
-        cubre el grueso de las causas penales de CABA. No incluye SPB ni alcaidías porteñas.
-        Del total, 1.497 (49,5%) residían en CABA antes de ser detenidos; el resto, mayormente
-        en Buenos Aires provincia (AMBA).</li>
-      <li><strong>753 internos quedan "fuera del modelo"</strong> porque cometieron delitos no
-        cubiertos por el Mapa CABA: narcotráfico (140), violaciones (249), privación ilegítima
-        de la libertad, delitos contra la administración pública, etc.</li>
+      <li><strong>El universo SNEEP usado es Justicia Nacional 2023:</strong> 5.276 internos
+        a disposición de la justicia (3.021 condenados + 2.252 procesados + 3 inimputables).
+        Cubre el grueso de causas penales de CABA, pero no incluye SPB ni alcaidías porteñas.
+        Del total mapeable (3.877), aproximadamente la mitad residía en CABA antes de ser
+        detenido; el resto mayormente en Buenos Aires provincia (AMBA).</li>
+      <li><strong>1.399 internos quedan "fuera del modelo"</strong> porque cometieron delitos
+        no cubiertos por el Mapa CABA: narcotráfico, violaciones, privación ilegítima de la
+        libertad, delitos contra la administración pública, etc.</li>
+      <li><strong>Procesados y condenados se modelan distinto:</strong> los condenados
+        permanecen <em>condena media × factor de cumplimiento</em> años; los procesados
+        permanecen <em>tiempo de proceso</em> años (estimado como la diferencia entre
+        FechaCondenado y FechaDetencion en los condenados de cada categoría).</li>
       <li><strong>El mapa del delito subregistra denuncias</strong> — cifra negra alta, sobre
         todo en hurto y amenazas. El delito real es mayor al denunciado.</li>
-      <li><strong>"Tasa de flujo" vs "Tasa empírica":</strong> la empírica (presos/delitos) mezcla
-        stock con flujo y por eso da valores raros (191% en homicidios). La de flujo divide
-        ingresos anuales estimados sobre delitos — siempre <span class="nowrap">&lt; 100 %</span>
-        e interpretable como "porcentaje de delitos que termina en una condena nacional por año".</li>
+      <li><strong>Tasa de flujo:</strong> ingresos anuales estimados / delitos. Interpretable
+        como "porcentaje de delitos que ingresa al SPF por año".</li>
     </ol>
   </details>
 
   <section>
     <h2>Parámetros base por categoría</h2>
     <p class="muted">
-      Calculados directamente desde los archivos crudos. La tasa de flujo (en
-      negrita) es la que arranca el simulador; la empírica está al lado para
-      transparencia.
+      Calculados desde los archivos crudos. Universo: <strong>5.276 internos</strong>
+      a disposición de Justicia Nacional en 2023 — condenados + procesados +
+      inimputables. La tasa de flujo es la que arranca el simulador.
     </p>
     <div class="table-wrap">
       <table id="tabla-parametros">
@@ -68,12 +71,13 @@
           <tr>
             <th>Categoría</th>
             <th class="num">Delitos 2023 <small>(CABA)</small></th>
-            <th class="num">Internos SPF <small>(2023)</small></th>
+            <th class="num">Internos <small>(2023)</small></th>
+            <th class="num muted-th"><small>de los cuales<br>condenados</small></th>
+            <th class="num muted-th"><small>de los cuales<br>procesados</small></th>
             <th class="num" title="Porcentaje de internos cuya última residencia era CABA">% res. CABA</th>
-            <th class="num muted-th" title="presos_2023 / delitos_2023 — mezcla stock con flujo, sólo informativa">Tasa empírica</th>
-            <th class="num" title="ingresos_anuales / delitos_2023 — usada por el simulador">Tasa de flujo</th>
+            <th class="num" title="ingresos anuales / delitos — la que usa el simulador">Tasa de flujo</th>
             <th class="num">Condena media <small>(años)</small></th>
-            <th class="num muted-th">Mediana</th>
+            <th class="num">Tiempo proceso <small>(años)</small></th>
           </tr>
         </thead>
         <tbody></tbody>

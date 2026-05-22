@@ -3,46 +3,49 @@
     "anio_base": 2023,
     "horizonte_anos": 10,
     "total_delitos_caba_2023": 155897,
-    "total_presos_sneep_2023": 3021,
-    "presos_modelables": 2268,
-    "presos_no_modelables": 753,
+    "total_presos_sneep_2023": 5276,
+    "total_condenados": 3021,
+    "total_procesados": 2252,
+    "total_inimputables": 3,
+    "presos_modelables": 3877,
+    "presos_no_modelables": 1399,
     "categorias_no_mapeadas": [
       {
         "delito": "Violaciones/Abuso sexual",
-        "n": 249
+        "n": 546
       },
       {
         "delito": "InfracciÃ³n ley nÂ° 23.737 (estupefacientes)",
-        "n": 140
+        "n": 181
       },
       {
         "delito": "Otros delitos contra las personas",
-        "n": 70
+        "n": 140
       },
       {
-        "delito": "PrivaciÃ³n ilegÃ­tima de la libertad",
-        "n": 60
-      },
-      {
-        "delito": "Delitos c/el orden pÃºblico",
-        "n": 52
+        "delito": "Otros delitos contra la libertad",
+        "n": 103
       },
       {
         "delito": "Delitos c/ la administracion pÃºblica",
-        "n": 43
+        "n": 91
       },
       {
-        "delito": "Delitos contra la seguridad pÃºblica",
-        "n": 33
+        "delito": "Delitos c/el orden pÃºblico",
+        "n": 85
+      },
+      {
+        "delito": "PrivaciÃ³n ilegÃ­tima de la libertad",
+        "n": 78
       },
       {
         "delito": "Otros delitos contra la propiedad",
-        "n": 27
+        "n": 52
       }
     ],
     "fuente_delitos": "Mapa del Delito CABA 2023",
-    "fuente_presos": "SNEEP nacional 2023 (SPF) · Delito1Descripcion",
-    "nota_universo": "El SNEEP nacional incluye sólo internos con causa en Justicia Nacional (3.021 condenados). No incluye SPB ni alcaidías porteñas. Del total, 1.497 (49,5%) tenían residencia en CABA y 1.307 en Buenos Aires provincia (mayoría AMBA).",
+    "fuente_presos": "SNEEP Justicia Nacional 2023 · Delito1Descripcion",
+    "nota_universo": "El universo incluye los 5.276 internos a disposición de Justicia Nacional en 2023: 3.021 condenados, 2.252 procesados y 3 inimputables. No incluye SPB ni alcaidías porteñas. Cond y proc se modelan con permanencias medias distintas: condena efectiva (condena_media × factor_cumplimiento) para condenados, tiempo de proceso para procesados (medido como FechaCondenado − FechaDetencion en los condenados, como proxy del ciclo completo).",
     "factor_cumplimiento_default_calibracion": 0.67
   },
   "escenarios_default": {
@@ -62,16 +65,21 @@
       "mapa_tipo": "Robo",
       "mapa_subtipos": null,
       "delitos_2023": 64983,
-      "presos_sneep_2023": 1615,
-      "presos_residencia_caba": 761,
-      "pct_residencia_caba": 0.471,
-      "tasa_empirica": 0.024853,
-      "tasa_flujo": 0.008029,
+      "presos_2023": 2707,
+      "presos_condenados": 1615,
+      "presos_procesados": 1092,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.403,
+      "presos_residencia_caba": 1435,
+      "pct_residencia_caba": 0.53,
+      "tasa_empirica": 0.041657,
+      "tasa_flujo": 0.01858,
       "condena_media_anos": 4.62,
       "condena_mediana_anos": 3.33,
-      "condena_p10_anos": 1.0,
-      "condena_p90_anos": 9.0,
-      "n_condenas_observadas": 1594
+      "tiempo_proceso_anos": 0.98,
+      "tiempo_actual_proc_anos": 1.3,
+      "n_condenas_observadas": 1594,
+      "n_proc_con_fecha": 1090
     },
     {
       "nombre": "Hurto",
@@ -81,16 +89,21 @@
       "mapa_tipo": "Hurto",
       "mapa_subtipos": null,
       "delitos_2023": 62567,
-      "presos_sneep_2023": 251,
-      "presos_residencia_caba": 172,
-      "pct_residencia_caba": 0.685,
-      "tasa_empirica": 0.004012,
-      "tasa_flujo": 0.001531,
+      "presos_2023": 349,
+      "presos_condenados": 251,
+      "presos_procesados": 98,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.281,
+      "presos_residencia_caba": 238,
+      "pct_residencia_caba": 0.682,
+      "tasa_empirica": 0.005578,
+      "tasa_flujo": 0.002681,
       "condena_media_anos": 3.91,
       "condena_mediana_anos": 3.0,
-      "condena_p10_anos": 0.67,
-      "condena_p90_anos": 7.5,
-      "n_condenas_observadas": 248
+      "tiempo_proceso_anos": 0.7,
+      "tiempo_actual_proc_anos": 0.5,
+      "n_condenas_observadas": 248,
+      "n_proc_con_fecha": 98
     },
     {
       "nombre": "Homicidios dolosos",
@@ -101,16 +114,21 @@
       "mapa_tipo": "Homicidios",
       "mapa_subtipos": null,
       "delitos_2023": 91,
-      "presos_sneep_2023": 174,
-      "presos_residencia_caba": 109,
-      "pct_residencia_caba": 0.626,
-      "tasa_empirica": 1.912088,
-      "tasa_flujo": 0.196547,
+      "presos_2023": 329,
+      "presos_condenados": 174,
+      "presos_procesados": 155,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.471,
+      "presos_residencia_caba": 205,
+      "pct_residencia_caba": 0.623,
+      "tasa_empirica": 3.615385,
+      "tasa_flujo": 0.547321,
       "condena_media_anos": 14.52,
       "condena_mediana_anos": 15.0,
-      "condena_p10_anos": 5.1,
-      "condena_p90_anos": 24.0,
-      "n_condenas_observadas": 125
+      "tiempo_proceso_anos": 3.1,
+      "tiempo_actual_proc_anos": 2.53,
+      "n_condenas_observadas": 125,
+      "n_proc_con_fecha": 152
     },
     {
       "nombre": "Lesiones dolosas",
@@ -120,16 +138,21 @@
       "mapa_tipo": "Lesiones",
       "mapa_subtipos": null,
       "delitos_2023": 9612,
-      "presos_sneep_2023": 26,
-      "presos_residencia_caba": 15,
-      "pct_residencia_caba": 0.577,
-      "tasa_empirica": 0.002705,
-      "tasa_flujo": 0.000866,
+      "presos_2023": 28,
+      "presos_condenados": 26,
+      "presos_procesados": 2,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.071,
+      "presos_residencia_caba": 17,
+      "pct_residencia_caba": 0.607,
+      "tasa_empirica": 0.002913,
+      "tasa_flujo": 0.00096,
       "condena_media_anos": 4.66,
       "condena_mediana_anos": 3.92,
-      "condena_p10_anos": 1.85,
-      "condena_p90_anos": 7.0,
-      "n_condenas_observadas": 26
+      "tiempo_proceso_anos": 1.9,
+      "tiempo_actual_proc_anos": 0.46,
+      "n_condenas_observadas": 26,
+      "n_proc_con_fecha": 2
     },
     {
       "nombre": "Amenazas",
@@ -139,16 +162,21 @@
       "mapa_tipo": "Amenazas",
       "mapa_subtipos": null,
       "delitos_2023": 8214,
-      "presos_sneep_2023": 30,
-      "presos_residencia_caba": 19,
-      "pct_residencia_caba": 0.633,
-      "tasa_empirica": 0.003652,
-      "tasa_flujo": 0.000897,
+      "presos_2023": 41,
+      "presos_condenados": 30,
+      "presos_procesados": 11,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.268,
+      "presos_residencia_caba": 28,
+      "pct_residencia_caba": 0.683,
+      "tasa_empirica": 0.004991,
+      "tasa_flujo": 0.001485,
       "condena_media_anos": 6.08,
       "condena_mediana_anos": 4.25,
-      "condena_p10_anos": 2.2,
-      "condena_p90_anos": 13.8,
-      "n_condenas_observadas": 30
+      "tiempo_proceso_anos": 1.42,
+      "tiempo_actual_proc_anos": 1.32,
+      "n_condenas_observadas": 30,
+      "n_proc_con_fecha": 11
     },
     {
       "nombre": "Vialidad fatal",
@@ -160,16 +188,21 @@
         "Muertes por siniestros viales"
       ],
       "delitos_2023": 102,
-      "presos_sneep_2023": 159,
-      "presos_residencia_caba": 42,
-      "pct_residencia_caba": 0.264,
-      "tasa_empirica": 1.558824,
-      "tasa_flujo": 0.222004,
+      "presos_2023": 374,
+      "presos_condenados": 159,
+      "presos_procesados": 213,
+      "presos_inimputables": 2,
+      "pct_procesados": 0.57,
+      "presos_residencia_caba": 164,
+      "pct_residencia_caba": 0.439,
+      "tasa_empirica": 3.666667,
+      "tasa_flujo": 0.838949,
       "condena_media_anos": 10.48,
       "condena_mediana_anos": 10.0,
-      "condena_p10_anos": 3.83,
-      "condena_p90_anos": 20.0,
-      "n_condenas_observadas": 128
+      "tiempo_proceso_anos": 2.41,
+      "tiempo_actual_proc_anos": 3.1,
+      "n_condenas_observadas": 128,
+      "n_proc_con_fecha": 213
     },
     {
       "nombre": "Vialidad lesivo",
@@ -181,16 +214,21 @@
         "Lesiones por siniestros viales"
       ],
       "delitos_2023": 10328,
-      "presos_sneep_2023": 13,
-      "presos_residencia_caba": 3,
-      "pct_residencia_caba": 0.231,
-      "tasa_empirica": 0.001259,
-      "tasa_flujo": 0.000467,
+      "presos_2023": 49,
+      "presos_condenados": 13,
+      "presos_procesados": 36,
+      "presos_inimputables": 0,
+      "pct_procesados": 0.735,
+      "presos_residencia_caba": 7,
+      "pct_residencia_caba": 0.143,
+      "tasa_empirica": 0.004744,
+      "tasa_flujo": 0.003815,
       "condena_media_anos": 4.02,
       "condena_mediana_anos": 3.5,
-      "condena_p10_anos": 3.0,
-      "condena_p90_anos": 6.65,
-      "n_condenas_observadas": 13
+      "tiempo_proceso_anos": 0.72,
+      "tiempo_actual_proc_anos": 2.21,
+      "n_condenas_observadas": 13,
+      "n_proc_con_fecha": 36
     }
   ]
 }

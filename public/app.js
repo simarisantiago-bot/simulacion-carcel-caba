@@ -31,26 +31,34 @@ let chartCat   = null;
  *  Modelo
  * ───────────────────────────────────────────────────────── */
 
-/** Stock anual de presos de una categoría, a partir de:
- *  - cat: { delitos_2023, presos_sneep_2023, tasa_captura, condena_media_anos }
- *  - crecimiento: tasa anual decimal (0.03 = +3%/año)
- *  - horizonteAnos: cantidad de años a simular (a partir de 2024)
- *  - factorCumplimiento: fracción de la condena que se cumple efectivamente
- *                        (default 0.67 ≈ libertad condicional típica)
+/** Tiempo medio de permanencia en cárcel para una categoría, ponderando
+ *  condenados (con su condena efectiva) y procesados (con su tiempo de
+ *  proceso). Inimputables se asimilan a procesados. */
+function tiempoPermanenciaAnos(cat, factorCumplimiento) {
+  const nCond = cat.presos_condenados || 0;
+  const nProc = (cat.presos_procesados || 0) + (cat.presos_inimputables || 0);
+  const n = nCond + nProc;
+  if (n === 0) return 1;
+  const tCond = (cat.condena_media_anos || 0) * factorCumplimiento;
+  const tProc = cat.tiempo_proceso_anos || 0;
+  return Math.max(0.5, (nCond * tCond + nProc * tProc) / n);
+}
+
+/** Stock anual de presos de una categoría:
  *
- *  Modelo:
- *    condena_efectiva = condena_media · factor_cumplimiento
- *    stock(2023)      = presos_sneep_2023                          (observado)
+ *    permanencia      = wmean(condena_media · factor, tiempo_proceso)
+ *    stock(2023)      = presos_2023                                  (observado)
  *    stock(t)         = stock(t−1) + ingresos(t) − salidas(t)
  *    ingresos(t)      = delitos_2023 · (1+g)^(t−2023) · tasa_captura
- *    salidas(t)       = ingresos(t − condena_efectiva)
- *                       Si t − condena_efectiva < 2024, asumimos cohortes
- *                       estacionarias pre-modelo: presos_2023 / condena_efectiva.
+ *    salidas(t)       = ingresos(t − permanencia)
+ *                       Cohortes pre-2024 se asumen estacionarias:
+ *                       stock_2023 / permanencia.
  */
 function simularCategoria(cat, crecimiento, horizonteAnos, factorCumplimiento = 1.0) {
-  const condenaBase = cat.condena_media_anos || 1;
-  const condena = Math.max(1, Math.round(condenaBase * factorCumplimiento));
-  const ingresoEstacionario = cat.presos_sneep_2023 / condena;
+  const permanencia = tiempoPermanenciaAnos(cat, factorCumplimiento);
+  const periodo = Math.max(1, Math.round(permanencia));
+  const stock2023 = cat.presos_2023 || 0;
+  const ingresoEstacionario = stock2023 / Math.max(0.5, permanencia);
 
   const ingresos = [];
   for (let i = 1; i <= horizonteAnos; i++) {
@@ -59,10 +67,10 @@ function simularCategoria(cat, crecimiento, horizonteAnos, factorCumplimiento = 
   }
 
   const stock = [];
-  let s = cat.presos_sneep_2023;
+  let s = stock2023;
   for (let i = 0; i < horizonteAnos; i++) {
     const ing = ingresos[i];
-    const j = i - condena;
+    const j = i - periodo;
     const salida = j >= 0 ? ingresos[j] : ingresoEstacionario;
     s = Math.max(0, s + ing - salida);
     stock.push(s);
@@ -113,12 +121,13 @@ function renderTablaParametros() {
     tr.innerHTML = `
       <td><span class="dot" style="background:${COLOR[c.nombre]}"></span>${c.nombre}</td>
       <td class="num">${fmtInt.format(c.delitos_2023)}</td>
-      <td class="num">${fmtInt.format(c.presos_sneep_2023)}</td>
+      <td class="num"><strong>${fmtInt.format(c.presos_2023)}</strong></td>
+      <td class="num muted-num">${fmtInt.format(c.presos_condenados)}</td>
+      <td class="num muted-num">${fmtInt.format(c.presos_procesados)}</td>
       <td class="num">${fmtPct(c.pct_residencia_caba, 0)}</td>
-      <td class="num muted-num">${fmtPct(c.tasa_empirica)}</td>
       <td class="num"><strong>${fmtPct(c.tasa_flujo)}</strong></td>
       <td class="num">${c.condena_media_anos ?? '—'}</td>
-      <td class="num muted-num">${c.condena_mediana_anos ?? '—'}</td>
+      <td class="num">${c.tiempo_proceso_anos ?? '—'}</td>
     `;
     tbody.appendChild(tr);
   }
@@ -317,22 +326,24 @@ function renderChartCategorias(sim) {
 
 function freshState() {
   const stockTotal2023 = PARAMS.categorias.reduce(
-    (s, c) => s + (c.presos_sneep_2023 || 0), 0,
+    (s, c) => s + (c.presos_2023 || 0), 0,
   );
   return {
     horizonte: PARAMS.meta.horizonte_anos,
     crecimientos: { ...PARAMS.escenarios_default },
     factorCumplimiento: PARAMS.supuestos_default?.factor_cumplimiento ?? 0.67,
     capacidadReferencia: stockTotal2023,    // default: stock observado 2023
-    stockTotal2023,                          // baseline inmutable, para mostrar
+    stockTotal2023,
     categorias: PARAMS.categorias.map(c => ({
       nombre: c.nombre,
       delitos_2023: c.delitos_2023,
-      presos_sneep_2023: c.presos_sneep_2023,
-      // El simulador usa la tasa de flujo (no la empírica) como default,
-      // porque mantiene la coherencia con el stock observado.
-      tasa_captura: c.tasa_flujo,
-      condena_media_anos: c.condena_media_anos ?? 4,
+      presos_2023: c.presos_2023,
+      presos_condenados:   c.presos_condenados,
+      presos_procesados:   c.presos_procesados,
+      presos_inimputables: c.presos_inimputables,
+      tasa_captura: c.tasa_flujo,           // default = flujo (no empírica)
+      condena_media_anos:  c.condena_media_anos ?? 4,
+      tiempo_proceso_anos: c.tiempo_proceso_anos ?? 1,
     })),
   };
 }
