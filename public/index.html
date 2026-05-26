@@ -137,11 +137,27 @@
   </section>
 
   <section>
+    <h2>Traspaso de competencias penales (Cafiero)</h2>
+    <p class="muted">
+      Marcá qué categorías serían absorbidas por la Justicia de la Ciudad si
+      el traspaso se completara. Las no marcadas siguen como causas federales
+      en SPF. <strong>Default: todas marcadas</strong> — el escenario pleno de
+      la Ley Cafiero. Mirá el reparto resultante debajo del gráfico.
+    </p>
+    <div class="trasp-presets">
+      <button id="preset-pleno" class="btn-preset">Traspaso pleno</button>
+      <button id="preset-hoy"   class="btn-preset alt">Todo en Nacional</button>
+    </div>
+    <div id="traspaso-grid" class="trasp-grid"></div>
+  </section>
+
+  <section>
     <h2>Proyección de plazas necesarias</h2>
     <p class="muted">Tres escenarios. Stock total de presos por año, sumando las 6 categorías. La línea amarilla punteada es tu capacidad de referencia.</p>
     <div class="chart-wrap"><canvas id="chart-total"></canvas></div>
 
     <div id="balance"></div>
+    <div id="reparto"></div>
 
     <h3 class="sub">Desagregación por tipo de delito (escenario base)</h3>
     <div class="chart-wrap"><canvas id="chart-cat"></canvas></div>

@@ -207,6 +207,47 @@ function renderSliders() {
     rerun();
   });
 
+  // Traspaso Cafiero: toggles por categoría
+  const traspGrid = document.getElementById('traspaso-grid');
+  if (traspGrid) {
+    traspGrid.innerHTML = '';
+    STATE.categorias.forEach((c, idx) => {
+      const id = `trasp-${idx}`;
+      const row = document.createElement('label');
+      row.className = 'trasp-row';
+      row.innerHTML = `
+        <input type="checkbox" id="${id}" ${c.asumeCaba ? 'checked' : ''}>
+        <span class="trasp-dot" style="background:${COLOR[c.nombre]}"></span>
+        <span class="trasp-name">${c.nombre}</span>
+        <span class="trasp-state"></span>
+      `;
+      const cb    = row.querySelector('input');
+      const state = row.querySelector('.trasp-state');
+      const sync  = () => state.textContent = cb.checked ? 'CABA' : 'Nacional';
+      sync();
+      cb.addEventListener('change', () => {
+        STATE.categorias[idx].asumeCaba = cb.checked;
+        sync();
+        rerun();
+      });
+      traspGrid.appendChild(row);
+    });
+
+    // Preset buttons
+    const setAll = (val) => {
+      STATE.categorias.forEach((c, idx) => {
+        c.asumeCaba = val;
+        const cb = document.getElementById(`trasp-${idx}`);
+        if (cb) cb.checked = val;
+        const lbl = cb?.parentElement.querySelector('.trasp-state');
+        if (lbl) lbl.textContent = val ? 'CABA' : 'Nacional';
+      });
+      rerun();
+    };
+    document.getElementById('preset-pleno')?.addEventListener('click', () => setAll(true));
+    document.getElementById('preset-hoy')?.addEventListener('click',   () => setAll(false));
+  }
+
   // Reset
   document.getElementById('reset').addEventListener('click', () => {
     STATE = freshState();
@@ -344,6 +385,9 @@ function freshState() {
       tasa_captura: c.tasa_flujo,           // default = flujo (no empírica)
       condena_media_anos:  c.condena_media_anos ?? 4,
       tiempo_proceso_anos: c.tiempo_proceso_anos ?? 1,
+      // Si la categoría se traspasa a CABA bajo el régimen Cafiero (default sí).
+      // Las no marcadas se quedan como causas federales en SPF.
+      asumeCaba: true,
     })),
   };
 }
@@ -354,6 +398,57 @@ function rerun() {
   renderChartCategorias(sim);
   renderTablaPlazas(sim);
   renderBalance(sim);
+  renderReparto(sim);
+}
+
+/** Reparto jurisdiccional al año final del horizonte:
+ *  cuántas plazas van a CABA (categorías traspasadas) y cuántas a Nacional
+ *  (categorías que quedan en SPF), por escenario. */
+function renderReparto(sim) {
+  const out = document.getElementById('reparto');
+  if (!out) return;
+  const horiz = STATE.horizonte;
+  const anioFinal = 2023 + horiz;
+
+  // Set de categorías que van a CABA
+  const setCaba = new Set(
+    STATE.categorias.filter(c => c.asumeCaba).map(c => c.nombre)
+  );
+
+  function split(byCat) {
+    let caba = 0, nac = 0;
+    for (const [nombre, serie] of Object.entries(byCat)) {
+      const val = serie[horiz - 1] || 0;
+      if (setCaba.has(nombre)) caba += val; else nac += val;
+    }
+    return { caba: Math.round(caba), nac: Math.round(nac) };
+  }
+
+  const data = {
+    optimista: split(sim.optimista.byCat),
+    base:      split(sim.base.byCat),
+    pesimista: split(sim.pesimista.byCat),
+  };
+
+  const cards = Object.entries(data).map(([esc, { caba, nac }]) => `
+    <div class="reparto-card">
+      <div class="reparto-esc">${esc[0].toUpperCase()+esc.slice(1)}</div>
+      <div class="reparto-row">
+        <span class="reparto-jur caba">CABA</span>
+        <span class="reparto-val">${fmtInt.format(caba)}</span>
+      </div>
+      <div class="reparto-row">
+        <span class="reparto-jur nac">Nacional</span>
+        <span class="reparto-val">${fmtInt.format(nac)}</span>
+      </div>
+      <div class="reparto-total">Total ${fmtInt.format(caba + nac)}</div>
+    </div>
+  `).join('');
+
+  out.innerHTML = `
+    <div class="balance-hd">Reparto jurisdiccional al ${anioFinal} <small>(según traspaso Cafiero seleccionado)</small></div>
+    <div class="reparto-grid">${cards}</div>
+  `;
 }
 
 /** Balance final del horizonte: déficit o superávit contra la capacidad. */

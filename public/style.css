@@ -472,6 +472,137 @@ tbody tr.total-row td { color: var(--ba-cyan); border-bottom-color: var(--ba-azu
 }
 
 /* ─────────────────────────────────────────────────────────
+ *  Traspaso de competencias (Cafiero)
+ * ───────────────────────────────────────────────────────── */
+.trasp-presets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.btn-preset {
+  background: var(--ba-azul);
+  color: var(--ba-cyan);
+  border: none;
+  padding: 8px 14px;
+  font-family: 'Archivo', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.btn-preset:hover { background: #1d4060; }
+.btn-preset.alt {
+  background: #fff;
+  color: var(--ba-azul);
+  border: 1px solid var(--ba-azul);
+}
+.btn-preset.alt:hover { background: var(--ba-offwhite); }
+
+.trasp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+.trasp-row {
+  display: grid;
+  grid-template-columns: 22px 14px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fafbfc;
+  border: 1px solid var(--ba-line);
+  cursor: pointer;
+  font-size: 14px;
+}
+.trasp-row:hover { background: rgba(141, 226, 214, 0.18); }
+.trasp-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ba-azul);
+  margin: 0;
+}
+.trasp-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.trasp-name { color: var(--ba-azul); font-weight: 600; }
+.trasp-state {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ba-azul);
+  background: var(--ba-amarillo);
+  padding: 2px 8px;
+}
+.trasp-row input[type="checkbox"]:not(:checked) ~ .trasp-state {
+  background: var(--ba-line);
+  color: var(--ba-gris);
+}
+
+/* ─────────────────────────────────────────────────────────
+ *  Reparto jurisdiccional al horizonte
+ * ───────────────────────────────────────────────────────── */
+#reparto { margin: 20px 0 0; }
+.reparto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.reparto-card {
+  background: #fff;
+  border: 1px solid var(--ba-line);
+  border-top: 4px solid var(--ba-azul);
+  padding: 14px 16px;
+}
+.reparto-esc {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ba-gris);
+  margin-bottom: 8px;
+}
+.reparto-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.reparto-jur {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+}
+.reparto-jur.caba { background: var(--ba-amarillo); color: var(--ba-azul); }
+.reparto-jur.nac  { background: var(--ba-cyan);     color: var(--ba-azul); }
+.reparto-val {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ba-azul);
+}
+.reparto-total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--ba-line);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--ba-gris);
+  text-align: right;
+}
+@media (max-width: 700px) {
+  .reparto-grid { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────
  *  Footer
  * ───────────────────────────────────────────────────────── */
 footer {
